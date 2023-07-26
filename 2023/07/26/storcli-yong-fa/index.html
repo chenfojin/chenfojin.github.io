@@ -4,8 +4,9 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="序, null">
-    <meta name="description" content="">
+    <meta name="keywords" content="storcli用法, null">
+    <meta name="description" content="storcliStorCLI 是由 Broadcom（之前的 LSI 和 Avago Technologies）开发的，专门用于管理和配置其 MegaRAID 控制器的命令行工具。
+只有带有这些控制器的 RAID 卡才能使用 StorCLI">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -17,7 +18,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>序 | null</title>
+    <title>storcli用法 | null</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
 
@@ -273,12 +274,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/27.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/23.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">序</h1>
+                    <h1 class="description center-align post-title">storcli用法</h1>
                 </div>
             </div>
         </div>
@@ -314,28 +315,28 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2023-07-14
+                    2023-07-26
                 </div>
                 
 
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2023-07-14
+                    2023-07-26
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    0
+                    2.3k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    1 分
+                    9 分
                 </div>
                 
 
@@ -358,7 +359,266 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                
+                <h2 id="storcli"><a href="#storcli" class="headerlink" title="storcli"></a>storcli</h2><p>StorCLI 是由 Broadcom（之前的 LSI 和 Avago Technologies）开发的，专门用于管理和配置其 MegaRAID 控制器的命令行工具。</p>
+<p>只有带有这些控制器的 RAID 卡才能使用 StorCLI。其他厂商的 RAID 卡可能需要使用其他的管理工具。例如，HP 的 Smart Array 控制器需要使用 HP 提供的 Smart Storage Administrator (SSA) 或者 Array Configuration Utility (ACU)，而 Dell 的 PERC 控制器需要使用 Dell 提供的 OpenManage Server Administrator (OMSA)。</p>
+<h4 id="安装storcli"><a href="#安装storcli" class="headerlink" title="安装storcli"></a>安装storcli</h4><p><a target="_blank" rel="noopener" href="https://www.broadcom.cn/site-search?q=storcli">官网下载地址</a></p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">rpm</span> <span class="token parameter variable">-ivh</span> storcli-007.1410.0000.0000-1.noarch.rpms
+
+<span class="token comment"># 不管哪个目录rpm，最后安装完都在opt下，创建软链接方便使用</span>
+<span class="token function">ln</span> <span class="token parameter variable">-s</span> /opt/MegaRAID/storcli/storcli64 /bin/storcli
+<span class="token function">ln</span> <span class="token parameter variable">-s</span> /opt/MegaRAID/storcli/storcli64 /sbin/storcli<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<h4 id="日志收集"><a href="#日志收集" class="headerlink" title="日志收集"></a>日志收集</h4><p>请把收集的信息（raid1.txt、raid2.txt、SN.txt、c0.txt、c1.txt、ROC.txt、Hard.txt）回传分析</p>
+<p>1、storcli收集阵列日志</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">storcli /c0 show events <span class="token assign-left variable">file</span><span class="token operator">=</span>raid1.txt                  <span class="token comment"># 收集日志raid1.txt，c0代表阵列卡0</span>
+storcli /c1 show events <span class="token assign-left variable">file</span><span class="token operator">=</span>raid2.txt                  <span class="token comment"># 收集日志raid2.txt，c1代表阵列卡1</span>
+<span class="token comment"># 查看日志说明（得到的日志ctrl+F查找：）</span>
+Controller temperature threshold exceeded               <span class="token comment"># 温度高掉盘</span>
+0000 00                                                 <span class="token comment"># 有数据异常</span>
+Error                                                   <span class="token comment"># 有掉盘可能性</span>
+Fail                                                    <span class="token comment"># 查找阵列掉盘状态的变化</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>2、查看机器SN号</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">dmidecode <span class="token operator">|</span> <span class="token function">grep</span> Ser <span class="token operator">&gt;&gt;</span>SN.txt<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>3、掉盘故障处理</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 阵列下硬盘状态：</span>
+storcli /c0 show <span class="token operator">&gt;&gt;</span>c0.txt
+storcli /c1 show <span class="token operator">&gt;&gt;</span>c1.txt
+
+<span class="token comment"># 过滤raid卡温度:</span>
+storcli /call  show all <span class="token operator">|</span> <span class="token function">grep</span> ROC<span class="token operator">&gt;&gt;</span>ROC.txt
+
+<span class="token comment"># 过滤硬盘温度--健康度:</span>
+storcli /call/eall/sall show all <span class="token operator">|</span> <span class="token function">grep</span> <span class="token parameter variable">-Ei</span> <span class="token string">'(Det|Error|Count)'</span><span class="token operator">&gt;&gt;</span>Hard.txt
+
+<span class="token comment"># 说明：</span>
+Medai Error <span class="token assign-left variable">Count</span><span class="token operator">=</span><span class="token number">0</span>                                     <span class="token comment"># 0代表盘没问题，不为0如3代表硬盘问题</span>
+Predictive Failure <span class="token assign-left variable">Count</span><span class="token operator">=</span><span class="token number">0</span>                      <span class="token comment"># 0代表盘没问题，不为0如3代表硬盘问题</span>
+Detailed Information                            <span class="token comment"># 表示磁盘的插槽位置，Detailed Information</span>
+Drive Temperature                                       <span class="token comment"># 当前硬盘温度</span>
+Medai Error Count                                       <span class="token comment"># 表示磁盘可能错误，可能是磁盘有坏道，这个值不为0值得注意，数值越大，危险系数越高</span>
+Other Error Count                                       <span class="token comment"># 表示磁盘可能存在松动，可能需要重新再插入</span>
+Predictive Failure Count                        <span class="token comment"># 预测性失败统计</span>
+Raw Size                                                        <span class="token comment"># 硬盘大小</span>
+ROC temperature                                         <span class="token comment"># 控制芯片温度</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<h4 id="基本语法"><a href="#基本语法" class="headerlink" title="基本语法"></a>基本语法</h4><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">storcli /call/eall/sall show all
+
+/c              <span class="token comment"># controller 控制器号</span>
+/e              <span class="token comment"># Enclosure  背板号，这个术语在计算机硬件中通常指的是一个物理结构，指安装硬盘的物理结构</span>
+/s              <span class="token comment"># slot/pd    物理硬盘的slot号</span>
+/v              <span class="token comment"># vd             虚拟硬盘，virtual drive</span>
+/f              <span class="token comment"># foreign        外部配置</span>
+/d              <span class="token comment"># disk group 磁盘组，一个dg可以有多个vd</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<h4 id="查看raid控制器"><a href="#查看raid控制器" class="headerlink" title="查看raid控制器"></a>查看raid控制器</h4><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">storcli show            <span class="token comment"># 查看raid控制器摘要信息</span>
+storcli show all        <span class="token comment"># 查看raid控制器详细信息</span>
+storcli <span class="token builtin class-name">help</span>            <span class="token comment"># 查看帮助信息</span>
+storcli /c0 show alarm          <span class="token comment"># 查看蜂鸣器状态</span>
+storcli /c0 <span class="token builtin class-name">set</span> <span class="token assign-left variable">alarm</span><span class="token operator">=</span>on        <span class="token comment"># 启用蜂鸣器</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<h4 id="物理磁盘"><a href="#物理磁盘" class="headerlink" title="物理磁盘"></a>物理磁盘</h4><h5 id="查看物理磁盘状态"><a href="#查看物理磁盘状态" class="headerlink" title="查看物理磁盘状态"></a>查看物理磁盘状态</h5><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 查看所有控制器 所有背板 背板上的所有磁盘的详细信息</span>
+storcli /call/eall/sall show all
+
+<span class="token comment"># 主要关注以下几项</span>
+Medai Error <span class="token assign-left variable">Count</span><span class="token operator">=</span><span class="token number">0</span>                                     <span class="token comment"># 0代表盘没问题，不为0如3代表硬盘问题</span>
+Predictive Failure <span class="token assign-left variable">Count</span><span class="token operator">=</span><span class="token number">0</span>                      <span class="token comment"># 0代表盘没问题，不为0如3代表硬盘问题</span>
+Detailed Information                            <span class="token comment"># 表示磁盘的插槽位置，Detailed Information</span>
+Drive Temperature                                       <span class="token comment"># 当前硬盘温度</span>
+Medai Error Count                                       <span class="token comment"># 表示磁盘可能错误，可能是磁盘有坏道，这个值不为0值得注意，数值越大，危险系数越高</span>
+Other Error Count                                       <span class="token comment"># 表示磁盘可能存在松动，可能需要重新再插入</span>
+Predictive Failure Count                        <span class="token comment"># 预测性失败统计</span>
+Raw Size                                                        <span class="token comment"># 硬盘大小</span>
+ROC temperature                                         <span class="token comment"># 控制芯片温度</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><img src="/medias/storcli%E7%94%A8%E6%B3%95/image-20230724142453492.png" alt="image-20230724142453492"></p>
+<h5 id="设置磁盘状态"><a href="#设置磁盘状态" class="headerlink" title="设置磁盘状态"></a>设置磁盘状态</h5><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 查看所有控制器 所有背板 背板上的所有磁盘的详细信息</span>
+storcli /call/eall/sall show all
+
+<span class="token comment"># 设置控制器 0 背板252槽位号为1的磁盘状态为good</span>
+storcli /c0/e252/s1 <span class="token builtin class-name">set</span> good
+
+<span class="token comment"># 设置控制器 0 背板252槽位号为1的磁盘状态为offline</span>
+storcli /c0/e252/s1 <span class="token builtin class-name">set</span> offline
+
+<span class="token comment"># 设置控制器为0 背板为252槽位号为1的磁盘状态为online</span>
+storcli /c0/e252/s1 <span class="token builtin class-name">set</span> online<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<h5 id="磁盘初始化"><a href="#磁盘初始化" class="headerlink" title="磁盘初始化"></a>磁盘初始化</h5><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 查看正在初始化的磁盘</span>
+storcli /cx/ex/sx show initialization
+
+<span class="token comment"># 磁盘开始初始化</span>
+storcli /cx/ex/sx start initialization
+
+<span class="token comment"># 停止磁盘的初始化</span>
+storcli /cx/ex/sx stop initialization<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<h4 id="raid操作"><a href="#raid操作" class="headerlink" title="raid操作"></a>raid操作</h4><h5 id="查看raid"><a href="#查看raid" class="headerlink" title="查看raid"></a>查看raid</h5><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 查看控制器上的所有</span>
+storcli /call/vall show
+
+<span class="token comment"># 查看具体的RAID虚拟设备号为1的详细信息</span>
+storcli /c0/v1 show all<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><img src="/medias/storcli%E7%94%A8%E6%B3%95/image-20230724144808893.png" alt="image-20230724144808893"></p>
+<h5 id="新建raid"><a href="#新建raid" class="headerlink" title="新建raid"></a>新建raid</h5><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">storcli /cx <span class="token function">add</span> vd r<span class="token punctuation">[</span><span class="token number">0</span><span class="token operator">|</span><span class="token number">1</span><span class="token operator">|</span><span class="token number">5</span><span class="token operator">|</span><span class="token number">6</span><span class="token operator">|</span>00<span class="token operator">|</span><span class="token number">10</span><span class="token operator">|</span><span class="token number">50</span><span class="token operator">|</span><span class="token number">60</span><span class="token punctuation">]</span>
+        <span class="token punctuation">[</span>Size<span class="token operator">=</span><span class="token operator">&lt;</span>VD1_Sz<span class="token operator">&gt;</span>,<span class="token operator">&lt;</span>VD2_Sz<span class="token operator">&gt;</span>,<span class="token punctuation">..</span><span class="token operator">|</span>remaining<span class="token punctuation">]</span> <span class="token punctuation">[</span>name<span class="token operator">=</span><span class="token operator">&lt;</span>VDNAME<span class="token operator"><span class="token file-descriptor important">1</span>&gt;</span>,<span class="token punctuation">..</span><span class="token punctuation">]</span>
+        <span class="token assign-left variable">drives</span><span class="token operator">=</span><span class="token punctuation">[</span>e:<span class="token punctuation">]</span>s<span class="token operator">|</span><span class="token punctuation">[</span>e:<span class="token punctuation">]</span>s-x<span class="token operator">|</span><span class="token punctuation">[</span>e:<span class="token punctuation">]</span>s-x,y <span class="token punctuation">[</span>PDperArray<span class="token operator">=</span>x<span class="token punctuation">]</span><span class="token punctuation">[</span>SED<span class="token punctuation">]</span>
+        <span class="token punctuation">[</span>pdcache<span class="token operator">=</span>on<span class="token operator">|</span>off<span class="token operator">|</span>default<span class="token punctuation">]</span><span class="token punctuation">[</span>pi<span class="token punctuation">]</span><span class="token punctuation">[</span>DimmerSwitch<span class="token punctuation">(</span>ds<span class="token punctuation">)</span><span class="token operator">=</span>default<span class="token operator">|</span>automatic<span class="token punctuation">(</span>auto<span class="token punctuation">)</span><span class="token operator">|</span>
+        none<span class="token operator">|</span>maximum<span class="token punctuation">(</span>max<span class="token punctuation">)</span><span class="token operator">|</span>MaximumWithoutCaching<span class="token punctuation">(</span>maxnocache<span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">[</span>WT<span class="token operator">|</span>WB<span class="token operator">|</span>AWB<span class="token punctuation">]</span><span class="token punctuation">[</span>nora<span class="token operator">|</span>ra<span class="token punctuation">]</span>
+        <span class="token punctuation">[</span>direct<span class="token operator">|</span>cached<span class="token punctuation">]</span> <span class="token punctuation">[</span>cachevd<span class="token punctuation">]</span> <span class="token punctuation">[</span>unmap<span class="token punctuation">]</span><span class="token punctuation">[</span>Strip<span class="token operator">=</span><span class="token operator">&lt;</span><span class="token number">8</span><span class="token operator">|</span><span class="token number">16</span><span class="token operator">|</span><span class="token number">32</span><span class="token operator">|</span><span class="token number">64</span><span class="token operator">|</span><span class="token number">128</span><span class="token operator">|</span><span class="token number">256</span><span class="token operator">|</span><span class="token number">512</span><span class="token operator">|</span><span class="token number">102</span><span class="token operator"><span class="token file-descriptor important">4</span>&gt;</span><span class="token punctuation">]</span>
+         <span class="token punctuation">[</span>AfterVd<span class="token operator">=</span>X<span class="token punctuation">]</span> <span class="token punctuation">[</span>EmulationType<span class="token operator">=</span><span class="token number">0</span><span class="token operator">|</span><span class="token number">1</span><span class="token operator">|</span><span class="token number">2</span><span class="token punctuation">]</span> <span class="token punctuation">[</span>Spares <span class="token operator">=</span> <span class="token punctuation">[</span>e:<span class="token punctuation">]</span>s<span class="token operator">|</span><span class="token punctuation">[</span>e:<span class="token punctuation">]</span>s-x<span class="token operator">|</span><span class="token punctuation">[</span>e:<span class="token punctuation">]</span>s-x,y<span class="token punctuation">]</span>
+        <span class="token punctuation">[</span>force<span class="token punctuation">]</span><span class="token punctuation">[</span>ExclusiveAccess<span class="token punctuation">]</span> <span class="token punctuation">[</span>Cbsize<span class="token operator">=</span><span class="token number">0</span><span class="token operator">|</span><span class="token number">1</span><span class="token operator">|</span><span class="token number">2</span> <span class="token assign-left variable">Cbmode</span><span class="token operator">=</span><span class="token number">0</span><span class="token operator">|</span><span class="token number">1</span><span class="token operator">|</span><span class="token number">2</span><span class="token operator">|</span><span class="token number">3</span><span class="token operator">|</span><span class="token number">4</span><span class="token operator">|</span><span class="token number">7</span><span class="token punctuation">]</span>
+
+<span class="token comment"># 使用默认参数创建的RAID5 读策略为ra: Read ahead 写策略wt io策略为direct 条带大小为256</span>
+storcli /c0 <span class="token function">add</span> vd r5 <span class="token assign-left variable">size</span><span class="token operator">=</span>all <span class="token assign-left variable">name</span><span class="token operator">=</span>Araid5 <span class="token assign-left variable">drives</span><span class="token operator">=</span><span class="token number">252</span>:0-11
+
+<span class="token comment"># 设置读写策略条带大小的RAID5</span>
+storcli /c0 <span class="token function">add</span> vd r5 <span class="token assign-left variable">size</span><span class="token operator">=</span>all <span class="token assign-left variable">name</span><span class="token operator">=</span>Araid5 <span class="token assign-left variable">drives</span><span class="token operator">=</span><span class="token number">252</span>:0-11 awb ra <span class="token assign-left variable">strip</span><span class="token operator">=</span><span class="token number">1024</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<h5 id="删除raid"><a href="#删除raid" class="headerlink" title="删除raid"></a>删除raid</h5><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 查看对应的vd号</span>
+storcli /call/vall show
+
+<span class="token comment"># 删除raid</span>
+storcli /c0/vall del
+
+<span class="token comment"># 删除含有用户数据（mbr或者分区信息）的raid</span>
+storcli /cx/vx del force<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<h5 id="raid缓存设置"><a href="#raid缓存设置" class="headerlink" title="raid缓存设置"></a>raid缓存设置</h5><p><strong>WT：</strong>Write Through。在写入缓存的同时，也将数据写入到背后的存储设备。这种方式可以提高数据的安全性，因为即使缓存失效，数据已经被保存在存储设备上。但是，它的缺点是写入操作的速度会受到存储设备速度的限制。</p>
+<p><strong>WB：</strong>Write Back。先将数据写入到缓存中，当缓存满时或者有空闲的机会时，再将数据写入到背后的存储设备。这种方式的优点是写入操作的速度会非常快，因为它只受到缓存速度的限制。但是，它的缺点是如果缓存突然失效（例如，由于电源中断），那么尚未写入到存储设备的数据会丢失。</p>
+<p><strong>AWB：</strong>Adaptive Write Back。这是一种混合策略，它会根据实际的工作负载和情况自动选择使用 Write Through 还是 Write Back 策略。这种方式旨在平衡数据的安全性和写入性能==（一般为raid卡含有电池的情况下会开启写缓存）==。</p>
+<p><strong>RA：</strong>Read-Ahead。这是一种预读策略，当系统从硬盘读取数据时，会预先读取更多的数据到缓存中，预期这些数据会在接下来的操作中被使用。这种策略利用了程序访问数据的局部性原理，可以显著提高连续读取的性能，因为从缓存读取数据比直接从硬盘读取数据要快得多。</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 设置写入缓存前需要先设置io优先级为缓存</span>
+storcli /cx/vx <span class="token builtin class-name">set</span> <span class="token assign-left variable">iopolicy</span><span class="token operator">=</span>direct<span class="token operator">|</span>cached
+
+<span class="token comment"># 设置写入缓存语法</span>
+storcli /cx/vx <span class="token builtin class-name">set</span> <span class="token assign-left variable">wrcache</span><span class="token operator">=</span>wt<span class="token operator">|</span>wb<span class="token operator">|</span>awb
+
+<span class="token comment"># 设置读缓存语法，nora不预读，ra预读</span>
+storcli /cx/vx <span class="token builtin class-name">set</span> <span class="token assign-left variable">racache</span><span class="token operator">=</span>nora<span class="token operator">|</span>ra<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<h5 id="raid初始化"><a href="#raid初始化" class="headerlink" title="raid初始化"></a>raid初始化</h5><p>RAID5（5块以上）和RAID6（6块以上）在进行快速初始化时会转到后台进行初始化。</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 查看快速初始化</span>
+storcli /cx/vx show init
+
+<span class="token comment"># 开启快速初始化</span>
+storcli /cx/vx start init
+
+<span class="token comment"># 开启完全初始化</span>
+storcli /cx/vx start init full
+
+<span class="token comment"># 停止初始化</span>
+storcli /cx/vx stop init
+
+<span class="token comment"># 查看后台初始化</span>
+storcli /cx/vx show bgi
+
+<span class="token comment"># 停止初始化</span>
+Storcli /all/v1 stop bgi
+
+<span class="token comment"># 挂起初始化</span>
+storcli /call/v1 <span class="token function">suspend</span> bgi<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<h5 id="raid一致性校验"><a href="#raid一致性校验" class="headerlink" title="raid一致性校验"></a>raid一致性校验</h5><p>cc：consistency check 一致性校验</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 查看初始化</span>
+storcli /cx/vx show cc
+
+<span class="token comment"># 开启初始化</span>
+storcli /cx/vx start cc
+
+<span class="token comment"># 停止初始化</span>
+storcli /cx/vx stop cc
+
+<span class="token comment">## LSIRAID卡自带的一致性校验</span>
+<span class="token comment"># 查看一致性校验执行的具体时间</span>
+storcli /cx show cc
+
+<span class="token comment"># 设置卡自带的一致性校验方式顺序或者并发</span>
+storcli /cx <span class="token builtin class-name">set</span> <span class="token assign-left variable">consistencycheck</span><span class="token operator">=</span>seq<span class="token operator">|</span>con
+
+<span class="token comment"># 关闭卡自带的一致性校验</span>
+storcli /cx <span class="token builtin class-name">set</span> <span class="token assign-left variable">cc</span><span class="token operator">=</span>off<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<h5 id="热备"><a href="#热备" class="headerlink" title="热备"></a>热备</h5><p>查看磁盘状态：storcli /c0 /eall/sall show 磁盘状态为UGOOD（unconfig good）空闲盘，磁盘状态为DHS（detect hot spare）为专属热备，磁盘状态为GHS（global hot spare）为全局热备</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 获取dgs号，获取磁盘状态找到ugood的磁盘</span>
+storcli /call/vall show
+storcli /c0 /eall/sall show
+
+<span class="token comment"># 添加专属热备</span>
+storcli /c0/e252/s6 <span class="token function">add</span> hotsparedrive <span class="token assign-left variable">dgs</span><span class="token operator">=</span><span class="token number">0</span>
+
+<span class="token comment"># 添加全局热备</span>
+storcli /c0/e252/s6 <span class="token function">add</span> hotsparedrive
+
+<span class="token comment"># 删除热备</span>
+storcli /c0/ex/sx delete hotsparedrive<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<h4 id="日志"><a href="#日志" class="headerlink" title="日志"></a>日志</h4><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 清除所有日志事件</span>
+storcli /cx <span class="token function">clear</span> events
+
+<span class="token comment"># 将日志信息保存到指定文件</span>
+storcli /cx show events <span class="token assign-left variable">file</span><span class="token operator">=</span>/path/file
+
+<span class="token comment"># 删除TTY（用于故障定位的固件输出信息） 日志</span>
+storcli /cx delete termlog
+
+<span class="token comment"># 查看产生日志文件的历史信息</span>
+storcli /cx show eventloginfo
+
+<span class="token comment"># 查看term log 日志配置或者日志信息</span>
+storcli /cx show termlog <span class="token assign-left variable">type</span><span class="token operator">=</span>config<span class="token operator">|</span>contents<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<h4 id="异常ubad恢复"><a href="#异常ubad恢复" class="headerlink" title="异常ubad恢复"></a>异常ubad恢复</h4><p>1、磁盘状态为UBad</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">storcli /cx/ex/sall show all<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/medias/storcli%E7%94%A8%E6%B3%95/image-20230724151430480.png" alt="image-20230724151430480"></p>
+<p>2、重新设置磁盘状态为good</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">storcli /c0/ex/sx <span class="token builtin class-name">set</span> good
+storcli /c1/e252/sall show<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p><img src="/medias/storcli%E7%94%A8%E6%B3%95/image-20230724153148549.png" alt="image-20230724153148549"></p>
+<p><img src="/medias/storcli%E7%94%A8%E6%B3%95/image-20230724153251689.png" alt="image-20230724153251689"></p>
+<p>3、查看硬盘状态，确认磁盘是否有故障问题（0代表没有故障）</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">storcli /c1/e252/sall show all<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/medias/storcli%E7%94%A8%E6%B3%95/image-20230724153345664.png" alt="image-20230724153345664"></p>
+<p>4、导入磁盘，检查磁盘状态为重建Rbld</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">storcli /cx/fall <span class="token function">import</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>5、检查磁盘状态Rbld，检查重建进度</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">storcli /cx/ex/sx show
+storcli /c0/e217/sall show rebuild<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p><img src="/medias/storcli%E7%94%A8%E6%B3%95/image-20230724154028562.png" alt="image-20230724154028562"></p>
+<p><img src="/medias/storcli%E7%94%A8%E6%B3%95/image-20230724154050933.png" alt="image-20230724154050933"></p>
+
                 
             </div>
             <hr/>
@@ -384,7 +644,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://chenfojin.github.io/2023/07/14/xu/">https://chenfojin.github.io/2023/07/14/xu/</a>
+                    <a href="https://chenfojin.github.io/2023/07/26/storcli-yong-fa/">https://chenfojin.github.io/2023/07/26/storcli-yong-fa/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -498,9 +758,10 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2023/07/26/storcli-yong-fa/">
                     <div class="card-image">
@@ -518,9 +779,9 @@
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2023-07-26
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-07-26
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
@@ -529,6 +790,7 @@
                         </span>
                     </div>
                 </div>
+
                 
             </div>
         </div>
@@ -536,7 +798,7 @@
         
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge right-badge text-color">
-                本篇&nbsp;<i class="far fa-dot-circle"></i>
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
                 <a href="/2023/07/14/xu/">
@@ -566,7 +828,6 @@
                         </span>
                     </div>
                 </div>
-
                 
             </div>
         </div>
