@@ -395,15 +395,15 @@ storcli /call  show all <span class="token operator">|</span> <span class="token
 storcli /call/eall/sall show all <span class="token operator">|</span> <span class="token function">grep</span> <span class="token parameter variable">-Ei</span> <span class="token string">'(Det|Error|Count)'</span><span class="token operator">&gt;&gt;</span>Hard.txt
 
 <span class="token comment"># 说明：</span>
-Medai Error <span class="token assign-left variable">Count</span><span class="token operator">=</span><span class="token number">0</span>                                     <span class="token comment"># 0代表盘没问题，不为0如3代表硬盘问题</span>
+Medai Error <span class="token assign-left variable">Count</span><span class="token operator">=</span><span class="token number">0</span>                             <span class="token comment"># 0代表盘没问题，不为0如3代表硬盘问题</span>
 Predictive Failure <span class="token assign-left variable">Count</span><span class="token operator">=</span><span class="token number">0</span>                      <span class="token comment"># 0代表盘没问题，不为0如3代表硬盘问题</span>
 Detailed Information                            <span class="token comment"># 表示磁盘的插槽位置，Detailed Information</span>
-Drive Temperature                                       <span class="token comment"># 当前硬盘温度</span>
-Medai Error Count                                       <span class="token comment"># 表示磁盘可能错误，可能是磁盘有坏道，这个值不为0值得注意，数值越大，危险系数越高</span>
-Other Error Count                                       <span class="token comment"># 表示磁盘可能存在松动，可能需要重新再插入</span>
+Drive Temperature                               <span class="token comment"># 当前硬盘温度</span>
+Medai Error Count                               <span class="token comment"># 表示磁盘可能错误，可能是磁盘有坏道，这个值不为0值得注意，数值越大，危险系数越高</span>
+Other Error Count                               <span class="token comment"># 表示磁盘可能存在松动，可能需要重新再插入</span>
 Predictive Failure Count                        <span class="token comment"># 预测性失败统计</span>
-Raw Size                                                        <span class="token comment"># 硬盘大小</span>
-ROC temperature                                         <span class="token comment"># 控制芯片温度</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+Raw Size                                        <span class="token comment"># 硬盘大小</span>
+ROC temperature                                 <span class="token comment"># 控制芯片温度</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 
 
@@ -412,17 +412,17 @@ ROC temperature                                         <span class="token comme
 /c              <span class="token comment"># controller 控制器号</span>
 /e              <span class="token comment"># Enclosure  背板号，这个术语在计算机硬件中通常指的是一个物理结构，指安装硬盘的物理结构</span>
 /s              <span class="token comment"># slot/pd    物理硬盘的slot号</span>
-/v              <span class="token comment"># vd             虚拟硬盘，virtual drive</span>
-/f              <span class="token comment"># foreign        外部配置</span>
+/v              <span class="token comment"># vd         虚拟硬盘，virtual drive</span>
+/f              <span class="token comment"># foreign    外部配置</span>
 /d              <span class="token comment"># disk group 磁盘组，一个dg可以有多个vd</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 
 
-<h4 id="查看raid控制器"><a href="#查看raid控制器" class="headerlink" title="查看raid控制器"></a>查看raid控制器</h4><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">storcli show            <span class="token comment"># 查看raid控制器摘要信息</span>
-storcli show all        <span class="token comment"># 查看raid控制器详细信息</span>
-storcli <span class="token builtin class-name">help</span>            <span class="token comment"># 查看帮助信息</span>
-storcli /c0 show alarm          <span class="token comment"># 查看蜂鸣器状态</span>
-storcli /c0 <span class="token builtin class-name">set</span> <span class="token assign-left variable">alarm</span><span class="token operator">=</span>on        <span class="token comment"># 启用蜂鸣器</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="查看raid控制器"><a href="#查看raid控制器" class="headerlink" title="查看raid控制器"></a>查看raid控制器</h4><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">storcli show              <span class="token comment"># 查看raid控制器摘要信息</span>
+storcli show all          <span class="token comment"># 查看raid控制器详细信息</span>
+storcli <span class="token builtin class-name">help</span>              <span class="token comment"># 查看帮助信息</span>
+storcli /c0 show alarm    <span class="token comment"># 查看蜂鸣器状态</span>
+storcli /c0 <span class="token builtin class-name">set</span> <span class="token assign-left variable">alarm</span><span class="token operator">=</span>on  <span class="token comment"># 启用蜂鸣器</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 
 
@@ -430,17 +430,17 @@ storcli /c0 <span class="token builtin class-name">set</span> <span class="token
 storcli /call/eall/sall show all
 
 <span class="token comment"># 主要关注以下几项</span>
-Medai Error <span class="token assign-left variable">Count</span><span class="token operator">=</span><span class="token number">0</span>                                     <span class="token comment"># 0代表盘没问题，不为0如3代表硬盘问题</span>
-Predictive Failure <span class="token assign-left variable">Count</span><span class="token operator">=</span><span class="token number">0</span>                      <span class="token comment"># 0代表盘没问题，不为0如3代表硬盘问题</span>
-Detailed Information                            <span class="token comment"># 表示磁盘的插槽位置，Detailed Information</span>
-Drive Temperature                                       <span class="token comment"># 当前硬盘温度</span>
-Medai Error Count                                       <span class="token comment"># 表示磁盘可能错误，可能是磁盘有坏道，这个值不为0值得注意，数值越大，危险系数越高</span>
-Other Error Count                                       <span class="token comment"># 表示磁盘可能存在松动，可能需要重新再插入</span>
-Predictive Failure Count                        <span class="token comment"># 预测性失败统计</span>
-Raw Size                                                        <span class="token comment"># 硬盘大小</span>
-ROC temperature                                         <span class="token comment"># 控制芯片温度</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+Medai Error <span class="token assign-left variable">Count</span><span class="token operator">=</span><span class="token number">0</span>             <span class="token comment"># 0代表盘没问题，不为0如3代表硬盘问题</span>
+Predictive Failure <span class="token assign-left variable">Count</span><span class="token operator">=</span><span class="token number">0</span>      <span class="token comment"># 0代表盘没问题，不为0如3代表硬盘问题</span>
+Detailed Information            <span class="token comment"># 表示磁盘的插槽位置，Detailed Information</span>
+Drive Temperature               <span class="token comment"># 当前硬盘温度</span>
+Medai Error Count               <span class="token comment"># 表示磁盘可能错误，可能是磁盘有坏道，这个值不为0值得注意，数值越大，危险系数越高</span>
+Other Error Count               <span class="token comment"># 表示磁盘可能存在松动，可能需要重新再插入</span>
+Predictive Failure Count        <span class="token comment"># 预测性失败统计</span>
+Raw Size                        <span class="token comment"># 硬盘大小</span>
+ROC temperature                 <span class="token comment"># 控制芯片温度</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<p><img src="/medias/storcli%E7%94%A8%E6%B3%95/image-20230724142453492.png" alt="image-20230724142453492"></p>
+<p><img src="/medias/storcli%E7%94%A8%E6%B3%95/image-20230724142453492.png"></p>
 <h5 id="设置磁盘状态"><a href="#设置磁盘状态" class="headerlink" title="设置磁盘状态"></a>设置磁盘状态</h5><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 查看所有控制器 所有背板 背板上的所有磁盘的详细信息</span>
 storcli /call/eall/sall show all
 
@@ -472,7 +472,7 @@ storcli /call/vall show
 <span class="token comment"># 查看具体的RAID虚拟设备号为1的详细信息</span>
 storcli /c0/v1 show all<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<p><img src="/medias/storcli%E7%94%A8%E6%B3%95/image-20230724144808893.png" alt="image-20230724144808893"></p>
+<p><img src="/medias/storcli%E7%94%A8%E6%B3%95/image-20230724144808893.png"></p>
 <h5 id="新建raid"><a href="#新建raid" class="headerlink" title="新建raid"></a>新建raid</h5><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">storcli /cx <span class="token function">add</span> vd r<span class="token punctuation">[</span><span class="token number">0</span><span class="token operator">|</span><span class="token number">1</span><span class="token operator">|</span><span class="token number">5</span><span class="token operator">|</span><span class="token number">6</span><span class="token operator">|</span>00<span class="token operator">|</span><span class="token number">10</span><span class="token operator">|</span><span class="token number">50</span><span class="token operator">|</span><span class="token number">60</span><span class="token punctuation">]</span>
         <span class="token punctuation">[</span>Size<span class="token operator">=</span><span class="token operator">&lt;</span>VD1_Sz<span class="token operator">&gt;</span>,<span class="token operator">&lt;</span>VD2_Sz<span class="token operator">&gt;</span>,<span class="token punctuation">..</span><span class="token operator">|</span>remaining<span class="token punctuation">]</span> <span class="token punctuation">[</span>name<span class="token operator">=</span><span class="token operator">&lt;</span>VDNAME<span class="token operator"><span class="token file-descriptor important">1</span>&gt;</span>,<span class="token punctuation">..</span><span class="token punctuation">]</span>
         <span class="token assign-left variable">drives</span><span class="token operator">=</span><span class="token punctuation">[</span>e:<span class="token punctuation">]</span>s<span class="token operator">|</span><span class="token punctuation">[</span>e:<span class="token punctuation">]</span>s-x<span class="token operator">|</span><span class="token punctuation">[</span>e:<span class="token punctuation">]</span>s-x,y <span class="token punctuation">[</span>PDperArray<span class="token operator">=</span>x<span class="token punctuation">]</span><span class="token punctuation">[</span>SED<span class="token punctuation">]</span>
@@ -598,17 +598,17 @@ storcli /cx show termlog <span class="token assign-left variable">type</span><sp
 <h4 id="异常ubad恢复"><a href="#异常ubad恢复" class="headerlink" title="异常ubad恢复"></a>异常ubad恢复</h4><p>1、磁盘状态为UBad</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">storcli /cx/ex/sall show all<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<p><img src="/medias/storcli%E7%94%A8%E6%B3%95/image-20230724151430480.png" alt="image-20230724151430480"></p>
+<p><img src="/medias/storcli%E7%94%A8%E6%B3%95/image-20230724151430480.png"></p>
 <p>2、重新设置磁盘状态为good</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">storcli /c0/ex/sx <span class="token builtin class-name">set</span> good
 storcli /c1/e252/sall show<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
-<p><img src="/medias/storcli%E7%94%A8%E6%B3%95/image-20230724153148549.png" alt="image-20230724153148549"></p>
-<p><img src="/medias/storcli%E7%94%A8%E6%B3%95/image-20230724153251689.png" alt="image-20230724153251689"></p>
+<p><img src="/medias/storcli%E7%94%A8%E6%B3%95/image-20230724153148549.png"></p>
+<p><img src="/medias/storcli%E7%94%A8%E6%B3%95/image-20230724153251689.png"></p>
 <p>3、查看硬盘状态，确认磁盘是否有故障问题（0代表没有故障）</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">storcli /c1/e252/sall show all<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<p><img src="/medias/storcli%E7%94%A8%E6%B3%95/image-20230724153345664.png" alt="image-20230724153345664"></p>
+<p><img src="/medias/storcli%E7%94%A8%E6%B3%95/image-20230724153345664.png"></p>
 <p>4、导入磁盘，检查磁盘状态为重建Rbld</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">storcli /cx/fall <span class="token function">import</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
@@ -616,8 +616,8 @@ storcli /c1/e252/sall show<span aria-hidden="true" class="line-numbers-rows"><sp
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">storcli /cx/ex/sx show
 storcli /c0/e217/sall show rebuild<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
-<p><img src="/medias/storcli%E7%94%A8%E6%B3%95/image-20230724154028562.png" alt="image-20230724154028562"></p>
-<p><img src="/medias/storcli%E7%94%A8%E6%B3%95/image-20230724154050933.png" alt="image-20230724154050933"></p>
+<p><img src="/medias/storcli%E7%94%A8%E6%B3%95/image-20230724154028562.png"></p>
+<p><img src="/medias/storcli%E7%94%A8%E6%B3%95/image-20230724154050933.png"></p>
 
                 
             </div>
